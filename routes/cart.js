@@ -6,7 +6,7 @@ const {verifyToken,verifyTokenAndAuthorization, verifyTokenAndAdmin}=require("./
 // create cart for user
 router.post("/",verifyToken,async(req,res)=>{
 
-   
+   console.log(req.body)
     const newCart=new Cart(req.body);
 
 
@@ -82,11 +82,11 @@ catch(e)
 
 
 // //get user cart
-router.get("/find/:userid",verifyTokenAndAuthorization, async(req,res)=>{
+router.get("/find/:id",verifyTokenAndAuthorization, async(req,res)=>{
 
     try{
      
-      const cart=  await Cart.findOne({userid:req.params.userid});
+      const cart=  await Cart.find({userid:req.params.id});
   
 
         res.status(200).json(cart)
@@ -94,7 +94,7 @@ router.get("/find/:userid",verifyTokenAndAuthorization, async(req,res)=>{
   }
 catch(e)
 {
-  res.status(500).json(e);
+  res.status(400).json(e);
 }
 })
 
