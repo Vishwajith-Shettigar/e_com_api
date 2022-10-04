@@ -26,21 +26,30 @@ router.post("/",verifyToken,async(req,res)=>{
 
 router.put("/:id",verifyTokenAndAuthorization,async(req,res)=>{
 
-   
+//    console.log(req.body.products)
+if(req.body.products[0].quantity<=0)
+{
+    await Cart.findByIdAndDelete(req.body._id);
+
+    res.status(201).json("Product has been deleted")
+}
+
 
     try{
-     const updateCart=await Cart.findByIdAndUpdate(req.params.id,{
+       
+     const updateCart=await Cart.findByIdAndUpdate(req.body._id,{
  
          $set:req.body
  
  
      },{new:true})
- 
+ console.log(updateCart)
      res.status(200).json(updateCart)
     }
     catch(e)
     {
-     res.status(500).json(e);
+     res.status(400).json(e);
+     console.log(e)
     }
  
  })
@@ -71,7 +80,7 @@ router.delete("/:id",verifyTokenAndAuthorization,async(req,res)=>{
      
           await Cart.findByIdAndDelete(req.params.id);
 
-          res.status(500).json("Product has been deleted")
+          res.status(201).json("Product has been deleted")
 
     }
 catch(e)
